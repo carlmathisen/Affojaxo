@@ -1,0 +1,64 @@
+<!DOCTYPE html>  <html> <head>   <title>Affojaxo.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               Affojaxo.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <p><strong>Affojaxo</strong> is a lightweight library for building web applications with ajax support.</p>
+
+<h3>Basic Usage</h3>
+
+<pre><code>affojaxo = new Affojaxo()
+affojaxo.get(url, (data) -&gt;
+    console.log data 
+)
+</code></pre>
+
+<p><strong>Author:</strong> <a href="http://www.kamikazemedia.no/">Carl Mathisen</a></p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">Affojaxo</span>
+    </pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>The request object used for communication with a server. Usually this will either be
+an ActiveXObject for browsers from Redmond or XMLHttpRequest object for the rest.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">getRequest: </span><span class="nf">() -&gt;</span>
+        
+        <span class="k">try</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nx">ActiveXObject</span><span class="p">(</span><span class="s1">&#39;Msxml2.XMLHTTP&#39;</span><span class="p">)</span>
+        <span class="k">catch</span> <span class="nx">error</span>
+            <span class="k">try</span>
+                <span class="k">return</span> <span class="k">new</span> <span class="nx">ActiveXObject</span><span class="p">(</span><span class="s1">&#39;Microsoft.XMLHTTP&#39;</span><span class="p">)</span>
+            <span class="k">catch</span> <span class="nx">e</span>
+                <span class="k">return</span> <span class="k">new</span> <span class="nb">window</span><span class="p">.</span><span class="nx">XMLHttpRequest</span><span class="p">()</span>
+        </pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>Sends a basic Ajax request. You will need to specify:</p>
+
+<ul>
+<li><strong>url</strong> - The URL (without parameters) to which the request is sent. Make sure that the URL is on the same
+address and port as the script itself.</li>
+<li><strong>callback</strong> - The response body will be sent as the first parameter to this callback function on completion</li>
+<li><strong>method</strong> - POST or GET</li>
+<li><strong>args</strong> - Arguments can be sent as a URL encoded string or as an associative object</li>
+</ul>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">send: </span><span class="nf">(url, callback, method, args) -&gt;</span>
+        </pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>Sets the arguments to an empty object if undefined.</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nx">args</span> <span class="o">or=</span> <span class="s1">&#39;&#39;</span>
+        </pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>Fetch a new request object and setup the connection URL and method (GET or POST).</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nv">request = </span><span class="nx">@getRequest</span><span class="p">()</span>
+        <span class="nx">request</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="nx">method</span><span class="p">,</span> <span class="nx">url</span><span class="p">,</span> <span class="kc">true</span><span class="p">)</span>
+        </pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>The connection response is asynchronys, so we need to setup
+a callback on readyState 4. Once the response is sent back to
+Affojaxo, the callback function is dispatched.</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nv">request.onreadystatechange = </span><span class="nf">() -&gt;</span>
+            <span class="k">if</span> <span class="nx">request</span><span class="p">.</span><span class="nx">readyState</span> <span class="o">is</span> <span class="mi">4</span>
+                <span class="nx">callback</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">responseText</span><span class="p">)</span>
+                </pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>Make sure that request parameters are decoded correctly at client (allow anything).</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nx">request</span><span class="p">.</span><span class="nx">setRequestHeader</span><span class="p">(</span><span class="s2">&quot;Content-Type&quot;</span><span class="p">,</span> <span class="s2">&quot;text/plain;charset=UTF-8&quot;</span><span class="p">);</span>
+                </pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>Sets the headers of a POST request to act like a form submittion.</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="k">if</span> <span class="nx">method</span> <span class="o">is</span> <span class="s1">&#39;POST&#39;</span>
+            <span class="nx">request</span><span class="p">.</span><span class="nx">setRequestHeader</span><span class="p">(</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">,</span><span class="s1">&#39;application/x-www-form-urlencoded&#39;</span><span class="p">)</span>
+        
+        <span class="nx">request</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">@parseArguments</span><span class="p">(</span><span class="nx">args</span><span class="p">))</span>
+    </pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>Uses a GET request to query the specified url and return a response to the specified function.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">get: </span><span class="nf">(url, callback) -&gt;</span>
+        <span class="nx">@send</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="nx">callback</span><span class="p">,</span> <span class="s1">&#39;GET&#39;</span><span class="p">)</span>
+    </pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <p>Uses a GET request to query the specified url and return a response synchronously.
+Use this sparingly, as synchronous calls can lock up the browser.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">gets: </span><span class="nf">(url) -&gt;</span>
+        <span class="nv">request = </span><span class="nx">@getRequest</span><span class="p">()</span>
+        <span class="nx">request</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="nx">url</span><span class="p">,</span> <span class="kc">false</span><span class="p">)</span>
+        <span class="nx">request</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="kc">null</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nx">request</span><span class="p">.</span><span class="nx">responseText</span>
+    </pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <p>Uses a POST request to query the specified url and insert the result into the specified element.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">post: </span><span class="nf">(url, callback, args) -&gt;</span>
+        <span class="nx">@send</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="nx">callback</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+    </pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <p>Makes sure that the arguments are formatted as a url encoded parameter string. This function
+expects a string or an associative object to parse.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">parseArguments: </span><span class="nf">(mixed) -&gt;</span>
+        
+        <span class="k">if</span> <span class="k">typeof</span> <span class="nx">mixed</span> <span class="o">is</span> <span class="s1">&#39;string&#39;</span>
+            <span class="k">return</span> <span class="nx">mixed</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="k">typeof</span> <span class="nx">mixed</span> <span class="o">is</span> <span class="s1">&#39;object&#39;</span>
+            <span class="k">return</span> <span class="nx">mixed</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;&amp;&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span>
+    
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
