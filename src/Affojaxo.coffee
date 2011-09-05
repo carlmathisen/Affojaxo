@@ -10,7 +10,7 @@
 
 #### Links
 # * **Author:** [Carl Mathisen](http://www.kamikazemedia.no/)
-# * **Repository:** [GitHub](http://carlmathisen.github.com/affojaxo/)
+# * **Repository:** [GitHub](http://github.com/carlmathisen/affojaxo/)
 
 # 
 class Affojaxo
