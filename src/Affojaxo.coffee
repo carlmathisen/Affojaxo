@@ -7,7 +7,10 @@
 #         console.log data 
 #     )
 #
-# **Author:** [Carl Mathisen](http://www.kamikazemedia.no/)
+
+#### Links
+# * **Author:** [Carl Mathisen](http://www.kamikazemedia.no/)
+# * **Repository:** [GitHub](http://carlmathisen.github.com/affojaxo/)
 
 # 
 class Affojaxo
